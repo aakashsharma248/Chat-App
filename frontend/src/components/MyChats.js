@@ -14,6 +14,11 @@ const MyChats = ({ fetchAgain }) => {
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
+  useEffect(() => {
+    // This will trigger a re-render when chats changes
+    // You can perform any additional logic here if needed
+  }, [chats]);
+
   const toast = useToast();
 
   const fetchChats = async () => {
@@ -71,6 +76,7 @@ const MyChats = ({ fetchAgain }) => {
             d="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
+            colorScheme='blue'
           >
             New Group Chat
           </Button>
@@ -86,7 +92,7 @@ const MyChats = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+                {chats ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
@@ -102,7 +108,7 @@ const MyChats = ({ fetchAgain }) => {
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
+                    : `${chat.chatName} (Group Chat)` }
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">

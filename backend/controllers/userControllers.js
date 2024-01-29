@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (!name || !email || !password) {
     res.status(400);
-    throw new Error("Please Enter all the Feilds");
+    throw new Error("Please Enter all the Fields");
   }
 
   const userExists = await User.findOne({ email });
@@ -82,4 +82,22 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { allUsers, registerUser, authUser };
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { _id, pic, name, email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  const updatedProfile = await User.findByIdAndUpdate(
+    _id,
+    { $set: { pic: pic || user.pic, name: name || user.name } },
+    { new: true }
+  ).select("-password");
+  if (!updatedProfile) {
+    res.status(404);
+    throw new Error("Profile not found");
+  } else {
+    res.json(updatedProfile);
+  }
+});
+
+module.exports = { allUsers, registerUser, authUser, updateUserProfile };

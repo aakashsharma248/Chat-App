@@ -2,7 +2,7 @@ import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
+import { IconButton, Spinner, useToast, Button } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,6 +11,8 @@ import ProfileModal from "./miscellaneous/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
+import { CheckIcon } from "@chakra-ui/icons";
+import {InputGroup} from "@chakra-ui/react";
 
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
@@ -71,7 +73,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+
+    if ((event.key === "Enter" || !event.key ) && newMessage.trim()!=="") {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -101,6 +104,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           position: "bottom",
         });
       }
+    }
+    else if((event.key === "Enter" || !event.key ) && newMessage.trim()===""){
+      setNewMessage("");
     }
   };
 
@@ -158,7 +164,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
-  return (
+    return (
     <>
       {selectedChat ? (
         <>
@@ -239,6 +245,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
+              <InputGroup>
               <Input
                 variant="filled"
                 bg="#E0E0E0"
@@ -246,6 +253,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 value={newMessage}
                 onChange={typingHandler}
               />
+              {
+              newMessage !== "" ?
+               (
+                <>
+                   <Button
+                  className="InputRight"
+                  children={<IconButton
+                  isRound={true}
+                  variant='solid'
+                  colorScheme='teal'
+                  aria-label='Done'
+                  fontSize='20px'
+                  onClick={sendMessage}
+                  icon={<CheckIcon />}
+                   /> 
+              }
+                size="s"
+              />
+                </>
+               ):
+               <></>
+               }
+              </InputGroup>
             </FormControl>
           </Box>
         </>

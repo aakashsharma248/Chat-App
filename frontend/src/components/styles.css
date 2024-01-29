@@ -4,3 +4,10 @@
   overflow-y: scroll;
   scrollbar-width: none;
 }
+.InputRight {
+  margin-left: 0.7% !important;
+  background: none !important;
+}
+.Input {
+  padding-left: 24px !important;
+}
