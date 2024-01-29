@@ -45,6 +45,7 @@ function SideDrawer() {
     setNotification,
     chats,
     setChats,
+    setUser
   } = ChatState();
 
   const toast = useToast();
@@ -134,7 +135,7 @@ function SideDrawer() {
         borderWidth="5px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen}>
+          <Button variant="outline" colorScheme='blue' onClick={onOpen}>
             <i className="fas fa-search"></i>
             <Text d={{ base: "none", md: "flex" }} px={4}>
               Search User
@@ -142,7 +143,7 @@ function SideDrawer() {
           </Button>
         </Tooltip>
         <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
+        Chat-App
         </Text>
         <div>
           <Menu>
@@ -180,7 +181,7 @@ function SideDrawer() {
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user}>
+              <ProfileModal user={user} setUser={setUser}>
                 <MenuItem>My Profile</MenuItem>{" "}
               </ProfileModal>
               <MenuDivider />
